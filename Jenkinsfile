@@ -8,11 +8,11 @@ pipeline {
     environment {
         IMAGE_NAME        = "springbootapp"
         IMAGE_TAG         = "${BUILD_NUMBER}" // Use build number as version
-        ACR_NAME          = "jenkinsazure"
+        ACR_NAME          = "jenkinsazure111"
         ACR_LOGIN_SERVER  = "${ACR_NAME}.azurecr.io"
         FULL_IMAGE_NAME   = "${ACR_LOGIN_SERVER}/${IMAGE_NAME}:${IMAGE_TAG}"
-        TENANT_ID         = "ec78375d-0db0-42cf-82a6-2e6403e95936"
-        RESOURCE_GROUP    = "Jenkins"
+        TENANT_ID         = "060ef2bd-c463-4d9e-948a-cef28518fc1f"
+        RESOURCE_GROUP    = "rg"
         AKS_CLUSTER       = "springboot"
         K8S_NAMESPACE     = "default"
         K8S_DEPLOYMENT    = "springboot-app"
@@ -21,7 +21,7 @@ pipeline {
     stages {
         stage('Checkout From Git') {
             steps {
-                git branch: 'prod', url: 'https://github.com/bkrrajmali/enahanced-petclinc-springboot.git'
+                git branch: 'prod', url: 'https://github.com/Gurinder007/enahanced-petclinc-springboot.git'
             }
         }
 
@@ -54,9 +54,9 @@ pipeline {
                 withSonarQubeEnv('sonarserver') {
                     sh '''
                         $SCANNER_HOME/bin/sonar-scanner \
-                        -Dsonar.organization=bkrrajmali \
-                        -Dsonar.projectName=SpringBootPet \
-                        -Dsonar.projectKey=bkrrajmali_springbootpet \
+                        -Dsonar.organization=gurinder007 \
+                        -Dsonar.projectName=enahanced-petclinc-springboot \
+                        -Dsonar.projectKey=Gurinder007_enahanced-petclinc-springboot \
                         -Dsonar.java.binaries=. \
                         -Dsonar.exclusions=**/trivy-fs-output.txt
                     '''
@@ -90,7 +90,7 @@ pipeline {
 
         stage('Azure Login to ACR') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'azure-acr-sp', usernameVariable: 'AZURE_USERNAME', passwordVariable: 'AZURE_PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: 'azure-jenkins-connection', usernameVariable: 'AZURE_USERNAME', passwordVariable: 'AZURE_PASSWORD')]) {
                     script {
                         echo "Azure Login Started"
                         sh '''
@@ -116,7 +116,7 @@ pipeline {
 
         stage('Azure Login to Kubernetes') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'azure-acr-sp', usernameVariable: 'AZURE_USERNAME', passwordVariable: 'AZURE_PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: 'azure-jenkins-connection', usernameVariable: 'AZURE_USERNAME', passwordVariable: 'AZURE_PASSWORD')]) {
                     script {
                         echo "Azure Login to Kubernetes Started"
                         sh '''
