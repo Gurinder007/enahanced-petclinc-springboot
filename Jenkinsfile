@@ -14,7 +14,7 @@ pipeline {
         FULL_IMAGE_NAME   = "${ACR_LOGIN_SERVER}/${IMAGE_NAME}:${IMAGE_TAG}"
         TENANT_ID         = "060ef2bd-c463-4d9e-948a-cef28518fc1f"
         RESOURCE_GROUP    = "rg"
-        AKS_CLUSTER       = "springboot"
+        AKS_CLUSTER       = "springbootapp"
         K8S_NAMESPACE     = "default"
         K8S_DEPLOYMENT    = "springboot-app"
     }
